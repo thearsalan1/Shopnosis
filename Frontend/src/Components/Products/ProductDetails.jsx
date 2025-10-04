@@ -103,7 +103,7 @@ const ProductDetails = () => {
         <div className=" h-full w-[350px] mr-2">
           <img
             className="w-full h-[600px] rounded object-cover"
-            src={mainImage}
+            src={mainImage ? mainImage : null}
             alt="MAin Product"
           />
         </div>
@@ -157,6 +157,7 @@ const ProductDetails = () => {
             <div className="flex gap-2 mt-2">
               {selectedProduct.sizes.map((size) => (
                 <button
+                  key={size}
                   className={` px-4 py-2 rounded border ${
                     selectedSize === size
                       ? "border-4 border-black"
