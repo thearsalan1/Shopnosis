@@ -7,7 +7,7 @@ import {
 } from "react-icons/hi2";
 import Searchbar from "./Searchbar";
 import CartDrawer from "../Layout/CartDrawer";
-import { IoMdClock, IoMdClose } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
