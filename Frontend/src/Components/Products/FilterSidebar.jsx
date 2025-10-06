@@ -87,7 +87,6 @@ const FilterSidebar = () => {
     }
     setFilters(newFilters);
     updateURLParams(newFilters);
-    console.log(newFilters);
   };
 
   const updateURLParams = (newFilters) => {
