@@ -13,7 +13,7 @@ const Hero = () => {
         />
       </div>
       <div className="absolute inset-0 bg-black/50 flex items-center justify-center ">
-        <div className="text-center text-white p-6 z-100">
+        <div className="text-center text-white p-6 10">
           <h1 className="sm:text-4xl  md:text-6xl  tracking-tight uppercase mb-4 font-bold">
             {" "}
             Style That Speaks. Fashion That Moves.
