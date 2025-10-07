@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserLayout from "./Components/Layout/UserLayout";
-import AdminLayout from "./Components/Layout/AdminLayout";
+import AdminLayout from "./Components/Admin/AdminLayout";
 import Home from "./Pages/Home";
 import { Toaster } from "sonner";
 import Login from "./Pages/Login";
