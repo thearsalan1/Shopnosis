@@ -16,6 +16,9 @@ import OrderDetailsPage from "./Pages/OrderDetailsPage";
 import MyOrderPage from "./Pages/MyOrderPage";
 import AdminHomePage from "./Pages/AdminHomePage";
 import UserManagement from "./Components/Admin/UserManagement";
+import ProductManagement from "./Components/Admin/ProductManagement";
+import EditproductPage from "./Components/Admin/EditproductPage";
+import OrderManagement from "./Components/Admin/OrderManagement";
 
 const App = () => {
   return (
@@ -45,6 +48,9 @@ const App = () => {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminHomePage />} />
             <Route path="users" element={<UserManagement />} />
+            <Route path="products" element={<ProductManagement />} />
+            <Route path="products/:id/edit" element={<EditproductPage />} />
+            <Route path="orders" element={<OrderManagement />} />
           </Route>
         </Routes>
       </PayPalScriptProvider>
