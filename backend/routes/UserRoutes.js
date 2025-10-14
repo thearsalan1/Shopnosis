@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -94,6 +95,14 @@ router.post("/login", async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
+});
+
+// @route GET /api/user/profile
+// @desc Get logged-In user's profile (Protected)
+// @access Private
+
+router.get("/profile", protect, async (req, res) => {
+  res.json(req.user);
 });
 
 module.exports = router;
