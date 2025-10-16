@@ -2,7 +2,7 @@ const express = require("express");
 const Checkout = require("../models/Checkout");
 const Cart = require("../models/Cart");
 const Product = require("../models/Products");
-const Order = require("../models/Order");
+const order = require("../models/Order");
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -78,18 +78,19 @@ router.post("/:id/finalize", protect, async (req, res) => {
 
     if (checkout.isPaid && !checkout.isFinalized) {
       // Final order
-      const finalOrder = await Order.create({
+      const finalOrder = await order.create({
         user: checkout.user,
-        orderItems: checkout.orderItems,
+        orderItem: checkout.checkoutItems,
         shippingAddress: checkout.shippingAddress,
         paymentMethod: checkout.paymentMethod,
         totalPrice: checkout.totalPrice,
         isPaid: true,
-        paidAt: checkout.paidAt,
+        paidAt: checkout.PaidAt,
         isDelivered: false,
         paymentStatus: "paid",
         paymentDetails: checkout.paymentDetails,
       });
+      console.log("Checkout Items at Finalize:", checkout.checkoutItems);
       // Mark the checkout as finalized
       checkout.isFinalized = true;
       checkout.finalizedAt = Date.now();
