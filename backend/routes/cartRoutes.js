@@ -2,6 +2,7 @@ const express = require("express");
 const Cart = require("../models/Cart");
 const Product = require("../models/Products");
 const { protect } = require("../middleware/authMiddleware");
+const mongoose = require("mongoose");
 
 const router = express.Router();
 
@@ -14,6 +15,18 @@ const getCart = async (userId, guestId) => {
   }
   return null;
 };
+// const getCart = async (userId, guestId) => {
+//   const query = {};
+//   if (userId && mongoose.Types.ObjectId.isValid(userId)) {
+//     query.user = new mongoose.Types.ObjectId(userId);
+//   } else if (guestId && mongoose.Types.ObjectId.isValid(guestId)) {
+//     query.guestId = new mongoose.Types.ObjectId(guestId);
+//   } else {
+//     return null;
+//   }
+
+//   return await Cart.findOne(query);
+// };
 
 // @route POST /api/cart
 // @desc Add a product to cart for guest or logged in user

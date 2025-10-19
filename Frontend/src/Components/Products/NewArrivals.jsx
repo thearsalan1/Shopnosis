@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const NewArrivals = () => {
   const scrollRef = useRef(null);
@@ -13,75 +14,20 @@ const NewArrivals = () => {
     scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" });
   };
 
-  const newArrivals = [
-    {
-      _id: "1",
-      name: "Stylish Jacket",
-      price: "200",
-      images: [
-        {
-          url: "https://picsum.photos/seed/jacket1/500/500",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "2",
-      name: "Elegant Lingerie Set",
-      price: "150",
-      images: [
-        {
-          url: "https://picsum.photos/seed/lingerie1/500/500",
-          altText: "Elegant Lingerie Set",
-        },
-      ],
-    },
-    {
-      _id: "3",
-      name: "Casual Denim Jacket",
-      price: "180",
-      images: [
-        {
-          url: "https://picsum.photos/seed/jacket2/500/500",
-          altText: "Casual Denim Jacket",
-        },
-      ],
-    },
-    {
-      _id: "4",
-      name: "Lace Bodysuit",
-      price: "120",
-      images: [
-        {
-          url: "https://picsum.photos/seed/lingerie2/500/500",
-          altText: "Lace Bodysuit",
-        },
-      ],
-    },
-    {
-      _id: "5",
-      name: "Silk Robe",
-      price: "220",
-      images: [
-        {
-          url: "https://picsum.photos/seed/robe1/500/500",
-          altText: "Silk Robe",
-        },
-      ],
-    },
-    {
-      _id: "6",
-      name: "Leather Biker Jacket",
-      price: "250",
-      images: [
-        {
-          url: "https://picsum.photos/seed/jacket3/500/500",
-          altText: "Leather Biker Jacket",
-        },
-      ],
-    },
-  ];
-
+  const [newArrivals, setNewArrivals] = useState([]);
+  useEffect(() => {
+    const fetchNewArrivals = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`
+        );
+        setNewArrivals(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchNewArrivals();
+  }, []);
   return (
     <section>
       <div className="container max-w-7xl mx-auto text-center mb-10 relative">

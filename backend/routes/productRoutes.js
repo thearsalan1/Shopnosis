@@ -166,8 +166,11 @@ router.get("/", async (req, res) => {
 
     let query = {};
 
-    // Filter logic
+    // Helper to safely split comma-separated strings
+    const safeSplit = (value) =>
+      typeof value === "string" ? value.split(",") : [];
 
+    // Filter logic
     if (collection && collection.toLowerCase() !== "all") {
       query.collections = collection;
     }
@@ -175,16 +178,16 @@ router.get("/", async (req, res) => {
       query.category = category;
     }
     if (material) {
-      query.material = { $in: material.split(",") };
+      query.material = { $in: safeSplit(material) };
     }
     if (brand) {
-      query.brand = { $in: material.split(",") };
+      query.brand = { $regex: brand, $options: "i" }; // flexible match
     }
     if (size) {
-      query.size = { $in: material.split(",") };
+      query.sizes = { $in: safeSplit(size) }; // match schema field
     }
     if (color) {
-      query.colors = { $in: [color] };
+      query.colors = { $in: safeSplit(color) }; // supports multiple colors
     }
     if (gender) {
       query.gender = gender;
@@ -201,7 +204,7 @@ router.get("/", async (req, res) => {
       ];
     }
 
-    // Sort query
+    // Sort logic
     let sort = {};
     if (sortBy) {
       switch (sortBy) {
@@ -219,13 +222,22 @@ router.get("/", async (req, res) => {
       }
     }
 
-    // Fetch products and sorting limit
-    let products = await Product.find(query)
+    // Debug log
+    console.log("Product filter query:", query);
+
+    // Fetch products
+    const products = await Product.find(query)
       .sort(sort)
       .limit(Number(limit) || 0);
+
+    // Log if no products found
+    if (products.length === 0) {
+      console.log("No products found for query:", query);
+    }
+
     res.json(products);
   } catch (error) {
-    console.error(error);
+    console.error("Error in product filter route:", error);
     res.status(500).json("Internal server error");
   }
 });
