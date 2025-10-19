@@ -1,12 +1,21 @@
 import { IoMdClose } from "react-icons/io";
 import CartContent from "./CartContent";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const CartDrawer = ({ toggleCartDrawer, drawerOpen }) => {
   const navigate = useNavigate();
+  const { user, guestId } = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.cart);
+  const userId = user ? user._id : null;
+
   const handleCheckOut = () => {
-    navigate("/checkout");
     toggleCartDrawer();
+    if (!user) {
+      navigate("/login?redirect=checkout");
+    } else {
+      navigate("/checkout");
+    }
   };
   return (
     <div
@@ -21,19 +30,31 @@ const CartDrawer = ({ toggleCartDrawer, drawerOpen }) => {
       </div>
       <div className="flex flex-col grow p-4 overflow-y-auto">
         <h2 className="text-xl font-semibold mb-4">Your Cart</h2>
-        <CartContent></CartContent>
+        {cart && cart?.products?.length > 0 ? (
+          <CartContent
+            cart={cart}
+            guestId={guestId}
+            userId={userId}
+          ></CartContent>
+        ) : (
+          <p>Your cart is empty</p>
+        )}
       </div>
 
       <div className="sticky bottom-0 p-4">
-        <button
-          onClick={handleCheckOut}
-          className="  bg-red-500 w-full font-semibold text-white text-md py-3 rounded-lg"
-        >
-          Checkout
-        </button>
-        <p className="text-sm tracking-tighter text-gray-500 mt-2 text-center">
-          Your savings and tax will be factored in at the final step.
-        </p>
+        {cart && cart?.products?.length > 0 && (
+          <>
+            <button
+              onClick={handleCheckOut}
+              className="  bg-red-500 w-full font-semibold text-white text-md py-3 rounded-lg"
+            >
+              Checkout
+            </button>
+            <p className="text-sm tracking-tighter text-gray-500 mt-2 text-center">
+              Your savings and tax will be factored in at the final step.
+            </p>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,52 +1,53 @@
 import React from "react";
-import { RiDeleteBin3Line, RiDeleteBin6Fill } from "react-icons/ri";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import {
+  removeFromCart,
+  updateCartItemQuantity,
+} from "../../Redux/slices/cartSlice";
 
-const CartContent = () => {
-  const CartProducts = [
-    {
-      productId: 1,
-      name: "Tshirt",
-      color: "Red",
-      size: "M",
-      quantity: 1,
-      price: 15,
-      image: "https://picsum.photos/200?random=1",
-    },
-    {
-      productId: 2,
-      name: "Jeans",
-      color: "Blue",
-      size: "L",
-      quantity: 1,
-      price: 25,
-      image: "https://picsum.photos/200?random=2",
-    },
-    {
-      productId: 3,
-      name: "Bra",
-      color: "Transparent",
-      size: "AA",
-      quantity: 2,
-      price: 10,
-      image: "https://picsum.photos/200?random=3",
-    },
-    {
-      productId: 1,
-      name: "Lower",
-      color: "Gray",
-      size: "M",
-      quantity: 1,
-      price: 35,
-      image: "https://picsum.photos/200?random=4",
-    },
-  ];
+const CartContent = ({ cart, userId, guestId }) => {
+  const dispatch = useDispatch();
+
+  // Handle quantity updates
+  const handleQuantityChange = (productId, delta, quantity, size, color) => {
+    const updatedQuantity = quantity + delta;
+    if (updatedQuantity >= 1) {
+      dispatch(
+        updateCartItemQuantity({
+          productId,
+          quantity: updatedQuantity,
+          guestId,
+          userId,
+          size,
+          color,
+        })
+      );
+    }
+  };
+
+  // Handle item removal
+  const handleRemoveItem = (productId, size, color) => {
+    dispatch(removeFromCart({ productId, size, color, guestId, userId }));
+  };
+
+  // Fallback for empty cart
+  if (!cart || !Array.isArray(cart.products) || cart.products.length === 0) {
+    return (
+      <p className="text-center text-gray-500 py-10">
+        Your cart is currently empty.
+      </p>
+    );
+  }
+
   return (
     <div>
-      {CartProducts.map((product, index) => {
+      {cart.products.map((product, index) => {
+        const id = product.productId || product._id;
         return (
           <div
-            key={index}
-            className="flex item-center justify-between py-4 border-b"
+            key={id + index}
+            className="flex items-center justify-between py-4 border-b"
           >
             <div className="flex items-start justify-between w-full p-2">
               <div className="flex">
@@ -58,22 +59,48 @@ const CartContent = () => {
                 <div>
                   <h3>{product.name}</h3>
                   <p className="text-xs text-gray-500 mb-1">
-                    size: {product.size} | color: {product.color}
+                    Size: {product.size} | Color: {product.color}
                   </p>
                   <div>
-                    <button className=" px-2.5 mr-1 text-md  text-center rounded border font-medium">
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(
+                          id,
+                          -1,
+                          product.quantity,
+                          product.size,
+                          product.color
+                        )
+                      }
+                      className="px-2.5 mr-1 text-md text-center rounded border font-medium"
+                    >
                       -
                     </button>
                     <span>{product.quantity}</span>
-                    <button className=" px-2 ml-2 text-center rounded font-medium border">
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(
+                          id,
+                          1,
+                          product.quantity,
+                          product.size,
+                          product.color
+                        )
+                      }
+                      className="px-2 ml-2 text-center rounded font-medium border"
+                    >
                       +
                     </button>
                   </div>
                 </div>
               </div>
               <div className="flex flex-col justify-between items-center h-full">
-                <p>$ {product.price.toLocaleString()}</p>
-                <button>
+                <p>${product.price.toLocaleString()}</p>
+                <button
+                  onClick={() =>
+                    handleRemoveItem(id, product.size, product.color)
+                  }
+                >
                   <RiDeleteBin6Fill className="text-red-500" />
                 </button>
               </div>
