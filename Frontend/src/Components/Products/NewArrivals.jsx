@@ -33,11 +33,14 @@ const NewArrivals = () => {
       <div className="container max-w-7xl mx-auto text-center mb-10 relative">
         <h2 className="text-3xl font-bold mb-4">Explore New Arrivals</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero nulla
-          necessitatibus obcaecati
+          Our latest arrivals are here to steal the spotlight—handpicked styles
+          that blend comfort, flair, and everyday magic. Whether you're
+          revamping your wardrobe or hunting for that one showstopper, these new
+          pieces are designed to turn heads and spark joy. Explore the
+          collection now and be the first to flaunt what’s trending!
         </p>
 
-        <div className="absolute right-0 bottom-[-30px] flex space-x-2 z-10">
+        <div className="absolute right-0 bottom-[-42px] flex space-x-2 z-10">
           <button
             onClick={scrollLeft}
             className="p-2 rounded border bg-white text-black"
