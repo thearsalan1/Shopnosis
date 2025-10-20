@@ -14,6 +14,7 @@ const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
   const { cart } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
 
   const cartItemCount =
     cart?.products?.reduce((total, product) => total + product.quantity, 0) ||
@@ -63,12 +64,14 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          <Link
-            to="/admin"
-            className="block bg-black px-2 py-0.5 rounded text-sm text-white"
-          >
-            Admin
-          </Link>
+          {user && user.role === "admin" && (
+            <Link
+              to="/admin"
+              className="block bg-black px-2 py-0.5 rounded text-sm text-white"
+            >
+              Admin
+            </Link>
+          )}
           <Link to="/profile" className="hover:text-black">
             <HiOutlineUser className="h-6 w-6 text-gray-700" />
           </Link>
@@ -97,43 +100,50 @@ const Navbar = () => {
           navDrawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex flex-col h-full ">
-          <div className="h-1/6 flex items-center justify-center border-b bg-gray-200">
-            Shopnosis
-            <button>
-              <IoMdClose
-                className="w-6 h-6 absolute right-2 top-2"
-                onClick={toggleHamBurger}
-              />
+        <div className="flex flex-col h-full bg-white">
+          {/* Header */}
+          <div className="h-20 flex items-center justify-center border-b bg-blue-500 relative">
+            <p className="text-2xl font-bold text-white">Shopnosis</p>
+            <button
+              onClick={toggleHamBurger}
+              className="absolute right-4 top-4 text-white hover:text-gray-200"
+            >
+              <IoMdClose className="w-6 h-6" />
             </button>
           </div>
-          <h1 className="text-3xl font-semibold ml-6 mt-5">Menu</h1>
+
+          {/* Menu Title */}
+          <h1 className="text-2xl font-semibold px-6 mt-6 text-gray-800">
+            Menu
+          </h1>
+
+          {/* Navigation Links */}
           <div className="flex flex-col gap-5 px-6 pt-6">
             <Link
               to="/collections/all?gender=Men"
               onClick={toggleHamBurger}
-              className="text-gray-700 hover:text-black text-sm font-medium uppercase"
+              className="text-gray-700 hover:text-blue-600 text-sm font-medium uppercase transition-colors"
             >
               Men
             </Link>
             <Link
               to="/collections/all?gender=Women"
               onClick={toggleHamBurger}
-              className="text-gray-700 hover:text-black text-sm font-medium uppercase"
+              className="text-gray-700 hover:text-blue-600 text-sm font-medium uppercase transition-colors"
             >
               Women
             </Link>
             <Link
               to="/collections/all?category=Top Wear"
               onClick={toggleHamBurger}
-              className="text-gray-700 hover:text-black text-sm font-medium uppercase"
+              className="text-gray-700 hover:text-blue-600 text-sm font-medium uppercase transition-colors"
             >
               Top Wear
             </Link>
             <Link
               to="/collections/all?category=Bottom Wear"
               onClick={toggleHamBurger}
-              className="text-gray-700 hover:text-black text-sm font-medium uppercase"
+              className="text-gray-700 hover:text-blue-600 text-sm font-medium uppercase transition-colors"
             >
               Bottom Wear
             </Link>

@@ -17,7 +17,7 @@ export const fetchUserOrders = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error(error);
-      return rejectWithValue(error.response.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -37,7 +37,7 @@ export const fetchOrderDetails = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -63,7 +63,10 @@ const orderSlice = createSlice({
       })
       .addCase(fetchUserOrders.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload.message;
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : action.payload?.message || "Failed to fetch orders";
       })
       .addCase(fetchOrderDetails.pending, (state) => {
         state.loading = true;
@@ -75,7 +78,10 @@ const orderSlice = createSlice({
       })
       .addCase(fetchOrderDetails.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload.message;
+        state.error =
+          typeof action.payload === "string"
+            ? action.payload
+            : action.payload?.message || "Failed to fetch order details";
       });
   },
 });

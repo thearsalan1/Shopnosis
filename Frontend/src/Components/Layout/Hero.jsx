@@ -22,13 +22,13 @@ const Hero = () => {
             Discover the latest trends in streetwear, casuals, and more.
           </p>
           <Link
-            to="#"
+            to={"/collections/all"}
             className="bg-black mr-2 text-white px-6 py-3 rounded hover:bg-gray-800 transition"
           >
             Shop Now
           </Link>
           <Link
-            to="#"
+            to={"/collections/all"}
             className="bg-white text-black px-6 py-3 rounded hover:bg-gray-300 transition"
           >
             Explore Collections

@@ -19,7 +19,7 @@ const FeaturedCollection = () => {
             compromise style.
           </p>
           <Link
-            to="/collection/all"
+            to="/collections/all"
             className="bg-black text-white px-6 py-3 rounded-lg text-lg hover:text-gray-300"
           >
             Explore Now
